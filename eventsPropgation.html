@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Propagation Example</title>
+  <style>
+    div {
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="outer">
+    Outer
+    <div id="middle">
+      Middle
+      <div id="inner">
+        Inner
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function logPhase(phase, elementId) {
+      console.log(`${phase} phase: ${elementId}`);
+    }
+
+    function handleEvent(event) {
+      logPhase('Capture', event.currentTarget.id);
+      logPhase('Target', event.target.id);
+      logPhase('Bubble', event.currentTarget.id);
+    }
+
+    const outerDiv = document.getElementById('outer');
+    const middleDiv = document.getElementById('middle');
+    const innerDiv = document.getElementById('inner');
+
+    outerDiv.addEventListener('click', handleEvent, true);  // true for capturing phase
+    middleDiv.addEventListener('click', handleEvent, true);
+    innerDiv.addEventListener('click', handleEvent, true);
+
+    outerDiv.addEventListener('click', handleEvent, false); // false for bubbling phase
+    middleDiv.addEventListener('click', handleEvent, false);
+    innerDiv.addEventListener('click', handleEvent, false);
+  </script>
+
+</body>
+</html>
